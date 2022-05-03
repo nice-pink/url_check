@@ -1,10 +1,4 @@
-from __future__ import annotations
-from typing import Union
-import os
 from enum import Enum
-import logging
-from typing import Dict
-
 
 class LogType(Enum):
     NoLog = 0
@@ -12,20 +6,6 @@ class LogType(Enum):
     Warning = 2
     Info = 3
     All = 4
-
-    @property
-    def logstash_level(self) -> Union[logging.CRITICAL, logging.ERROR, logging.WARNING,
-                                      logging.INFO, logging.DEBUG]:
-        if self.name == 'NoLog':
-            return logging.CRITICAL
-        elif self.name == 'Error':
-            return logging.ERROR
-        elif self.name == 'Warning':
-            return logging.WARNING
-        elif self.name == 'Info':
-            return logging.INFO
-        elif self.name == 'All':
-            return logging.DEBUG
 
 class Log:
     """ LOG """
