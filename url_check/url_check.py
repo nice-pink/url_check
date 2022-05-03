@@ -1,5 +1,6 @@
 import requests
 import time
+import datetime
 from typing import List
 from url_check.log import Log
 
@@ -41,7 +42,10 @@ class UrlCheck:
     
     @staticmethod
     def print_response(url: str, status_code: int, response_time: int):
+        now: datetime = datetime.datetime.now()
+        current_time: str = now.strftime("%H:%M:%S")
+        message: str = str(current_time) + ': ' + url + ' - ' + str(status_code) + ' - ' + str(response_time) + 'sec'
         if status_code == 200:
-            Log.happy(status_code, '-', url, '-', response_time, 'sec')
+            Log.happy(message)
         else:
-            Log.error(status_code, '-', url, '-', response_time, 'sec')
+            Log.error(message)
