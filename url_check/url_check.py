@@ -25,7 +25,7 @@ class UrlCheck:
         Log.info('*'*15)
         Log.info('')
 
-    def run(self, delay_sec: int = 60):
+    def run(self, delay_sec: int = 20):
         while True:
             last: time = time.time()
             now: time = time.time()
@@ -42,6 +42,6 @@ class UrlCheck:
     @staticmethod
     def print_response(url: str, status_code: int, response_time: int):
         if status_code == 200:
-            Log.happy(url, ', repsonse time:', response_time, 'ms')
+            Log.happy(status_code, '-', url, '-', response_time, 'sec')
         else:
-            Log.error(url, ', repsonse time:', response_time, 'ms')
+            Log.error(status_code, '-', url, '-', response_time, 'sec')
