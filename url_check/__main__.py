@@ -17,5 +17,3 @@ if __name__ == '__main__':
 
     url_check: UrlCheck = UrlCheck(units)
     url_check.run()
-
-# run python3 -m url_check --config '{"urls": ["https://alicante.dev.radiosphere.app"]}'
