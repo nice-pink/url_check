@@ -32,7 +32,12 @@ class UrlCheck:
             now: time = time.time()
             for unit in self.units:
                 last = time.time()
-                response = requests.get(unit.url)
+                
+                try:
+                    response = requests.get(unit.url)
+                except requests.exceptions.RequestException as exception:
+                    Log.error(exception)
+                
                 now: time = time.time()
                 # unit.status_codes.append(response.status_code)
                 # unit.response_times.append(now-last)
