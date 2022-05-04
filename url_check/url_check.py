@@ -26,7 +26,7 @@ class UrlCheck:
         Log.info('*'*15)
         Log.info('')
 
-    def run(self, delay_sec: int = 20):
+    def run(self, delay_sec: int = 20, verbose_logs: bool = False):
         while True:
             last: time = time.time()
             now: time = time.time()
@@ -41,16 +41,17 @@ class UrlCheck:
                 now: time = time.time()
                 # unit.status_codes.append(response.status_code)
                 # unit.response_times.append(now-last)
-                UrlCheck.print_response(unit.url, response.status_code, now-last)
+                UrlCheck.print_response(unit.url, response.status_code, now-last, verbose=verbose_logs)
 
             time.sleep(delay_sec)
     
     @staticmethod
-    def print_response(url: str, status_code: int, response_time: int):
+    def print_response(url: str, status_code: int, response_time: int, verbose: bool = False):
         now: datetime = datetime.datetime.now()
         current_time: str = now.strftime("%H:%M:%S")
         message: str = str(current_time) + ': ' + url + ' - ' + str(status_code) + ' - ' + str(response_time) + 'sec'
         if status_code == 200:
-            Log.happy(message)
+            if verbose:
+                Log.happy(message)
         else:
             Log.error(message)
