@@ -8,7 +8,11 @@ from url_check.log import Log
 class UrlCheckUnit:
     
     def __init__(self, url: str):
-        self.url: str = url
+        self.url: str = ""
+        if "http://" in url or "https://" in url:
+            self.url = url
+        else:
+            self.url = "https://" + url
         self.status_codes: List[int] = []
         self.response_times: List[int] = []
 
