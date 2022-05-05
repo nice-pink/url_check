@@ -36,7 +36,9 @@ class UrlCheck:
                 try:
                     response = requests.get(unit.url)
                 except requests.exceptions.RequestException as exception:
-                    Log.error(exception)
+                    now: datetime = datetime.datetime.now()
+                    current_time: str = now.strftime("%H:%M:%S")
+                    Log.error(current_time, exception)
                     continue
                 
                 now: time = time.time()
