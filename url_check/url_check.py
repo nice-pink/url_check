@@ -8,7 +8,11 @@ from url_check.log import Log
 class UrlCheckUnit:
     
     def __init__(self, url: str):
-        self.url: str = url
+        self.url: str = ""
+        if "http://" in url or "https://" in url:
+            self.url = url
+        else:
+            self.url = "https://" + url
         self.status_codes: List[int] = []
         self.response_times: List[int] = []
 
@@ -26,26 +30,36 @@ class UrlCheck:
         Log.info('*'*15)
         Log.info('')
 
-    def run(self, delay_sec: int = 20):
+    def run(self, delay_sec: int = 20, verbose_logs: bool = False):
         while True:
             last: time = time.time()
             now: time = time.time()
             for unit in self.units:
                 last = time.time()
-                response = requests.get(unit.url)
+                
+                try:
+                    response = requests.get(unit.url)
+                except requests.exceptions.RequestException as exception:
+                    now: datetime = datetime.datetime.now()
+                    current_time: str = now.strftime("%H:%M:%S")
+                    Log.error(current_time, exception)
+                    continue
+                
                 now: time = time.time()
                 # unit.status_codes.append(response.status_code)
                 # unit.response_times.append(now-last)
-                UrlCheck.print_response(unit.url, response.status_code, now-last)
+                UrlCheck.print_response(unit.url, response, now-last, verbose=verbose_logs)
 
             time.sleep(delay_sec)
     
     @staticmethod
-    def print_response(url: str, status_code: int, response_time: int):
+    def print_response(url: str, response, response_time: int, verbose: bool = False):
         now: datetime = datetime.datetime.now()
         current_time: str = now.strftime("%H:%M:%S")
-        message: str = str(current_time) + ': ' + url + ' - ' + str(status_code) + ' - ' + str(response_time) + 'sec'
-        if status_code == 200:
-            Log.happy(message)
+        message: str = str(current_time) + ': ' + url + ' - ' + str(response.status_code) + ' - ' + str(response_time) + 'sec'
+        if response.status_code == 200:
+            if verbose:
+                Log.happy(message)
         else:
             Log.error(message)
+            Log.error(response.content)
