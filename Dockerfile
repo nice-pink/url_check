@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 COPY url_check/ ./url_check
 
 # Command
-CMD [ "python", "-m", "url_check", "--config", "{\"urls\": [\"https://example.com\"]}" ]
+CMD [ "python", "-u", "-m", "url_check", "--config", "{\"urls\": [\"https://example.com\"]}" ]
