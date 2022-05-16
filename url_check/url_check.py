@@ -20,17 +20,19 @@ class UrlCheckUnit:
 
 class UrlCheck:
 
-    def __init__(self, units: List[UrlCheckUnit]):
+    def __init__(self, units: List[UrlCheckUnit], delay_sec: int):
         self.units = units
+        self.delay_sec: int = delay_sec
         Log.info('')
         Log.info('*'*15)
         Log.info('Monitor urls:')
         for unit in self.units:
             Log.info('-', unit.url)
+        Log.info('Every', delay_sec, 'seconds.')
         Log.info('*'*15)
         Log.info('')
 
-    def run(self, delay_sec: int = 20, verbose_logs: bool = False):
+    def run(self, verbose_logs: bool = False):
         while True:
             last: time = time.time()
             now: time = time.time()
@@ -50,7 +52,7 @@ class UrlCheck:
                 # unit.response_times.append(now-last)
                 UrlCheck.print_response(unit.url, response, now-last, verbose=verbose_logs)
 
-            time.sleep(delay_sec)
+            time.sleep(self.delay_sec)
     
     @staticmethod
     def print_response(url: str, response, response_time: int, verbose: bool = False):
