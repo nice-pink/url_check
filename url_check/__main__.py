@@ -1,7 +1,9 @@
 import argparse
 import json
+import sys
 from typing import List
 from url_check.url_check import UrlCheck, UrlCheckUnit
+from url_check.log import Log
 
 if __name__ == '__main__':
     # parse arguments
@@ -10,6 +12,10 @@ if __name__ == '__main__':
 
     args: parser = parser.parse_args()
     CONFIG: json.loads = args.config
+
+    if not CONFIG:
+        Log.error('Error: No config set.')
+        sys.exit(1)
     
     units: List[UrlCheckUnit] = []
     for url in CONFIG['urls']:
